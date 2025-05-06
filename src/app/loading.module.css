@@ -1,0 +1,45 @@
+.loaderContainer {
+    position: fixed; /* Фіксована позиція на екрані */
+    top: 0;
+    left: 0;
+    width: 100%; /* Забезпечує, що контейнер буде займати всю ширину */
+    height: 100vh; /* Забезпечує, що контейнер буде займати всю висоту екрану */
+    display: flex;
+    justify-content: center; /* Центрує лоадер по горизонталі */
+    align-items: center; /* Центрує лоадер по вертикалі */
+    z-index: 9999; /* Забезпечує, що лоадер буде зверху */
+}
+
+.loader {
+    width: 50px;
+    height: 100px;
+    display: grid;
+    color: #095307;
+    background:
+            linear-gradient(currentColor 0 0) top/100% 2px,
+            radial-gradient(farthest-side at top, #0000 calc(100% - 2px), currentColor calc(100% - 1px), #0000) top,
+            linear-gradient(currentColor 0 0) bottom/100% 2px,
+            radial-gradient(farthest-side at bottom, #0000 calc(100% - 2px), currentColor calc(100% - 1px), #0000) bottom;
+    background-size: 100% 1px, 100% 50%;
+    background-repeat: no-repeat;
+    animation: l18 4s infinite linear;
+}
+
+.loader::before,
+.loader::after {
+    content: "";
+    grid-area: 1/1;
+    background: inherit;
+    border: inherit;
+    animation: inherit;
+}
+
+.loader::after {
+    animation-duration: 2s;
+}
+
+@keyframes l18 {
+    100% {
+        transform: rotate(1turn);
+    }
+}
