@@ -26,13 +26,13 @@ export default function CreateUserFormComponent() {
     mutationFn: (data: ICreateUser) => adminService.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
-      setModal(false);
+      setModal(null);
       reset();
     },
   });
 
   const closeModal = () => {
-    setModal(false);
+    setModal(null);
     reset();
   };
 

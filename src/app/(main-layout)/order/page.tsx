@@ -1,6 +1,4 @@
-"use client";
-
-import CreateOrderComponent from "@/components/CreateOrderComponent.tsx";
+import CreateOrderComponent from "@/components/CreateOrderComponent";
 import FilterComponent from "@/components/FilterComponent";
 import OrdersComponent from "@/components/OrderContainer/OrdersComponent";
 import PaginationComponent from "@/components/PaginationComponent";

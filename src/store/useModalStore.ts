@@ -1,12 +1,13 @@
 import { create } from "zustand";
 
+type ModalType = "create" | "edit" | null;
+
 interface IModalState {
-  modal: boolean;
-  setModal: (modal: boolean) => void;
+  modal: ModalType;
+  setModal: (modal: ModalType) => void;
 }
 
 export const useModalStore = create<IModalState>((set) => ({
-  modal: false,
-
-  setModal: (modal) => set({ modal }),
+  modal: null,
+  setModal: (type) => set({ modal: type }),
 }));

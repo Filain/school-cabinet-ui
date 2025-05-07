@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import { useState } from "react";
 
 import OrderCommentComponent from "@/components/OrderContainer/OrderCommentComponent";
-import { IOrder } from "@/interfaces/orderInterface";
+import {IOrder} from "@/services/orderService";
 
 interface IOrderProps {
   order: IOrder;

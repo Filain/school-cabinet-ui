@@ -8,8 +8,8 @@ import EditOrderFormComponent from "@/components/EditOrderFormComponent";
 import Button from "@/components/ui/Button";
 import InputText from "@/components/ui/form/InputText";
 import Modal from "@/components/ui/Modal";
-import { IOrder } from "@/interfaces/orderInterface";
 import { commentService } from "@/services/commentService";
+import {IOrder} from "@/services/orderService";
 import { useModalStore } from "@/store/useModalStore";
 import { useUserStore } from "@/store/useUserStore";
 

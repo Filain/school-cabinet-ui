@@ -9,8 +9,8 @@ import InputNumber from "@/components/ui/form/InputNumber";
 import { InputSelect } from "@/components/ui/form/InputSelect";
 import InputText from "@/components/ui/form/InputText";
 import { Course, CourseFormat, CourseType, Statuses } from "@/constants/enums";
-import { IFormData, IOrder, IOrderCreate } from "@/interfaces/orderInterface";
-import { orderService } from "@/services/orderService";
+import { IFormData, IOrderCreate } from "@/interfaces/orderInterface";
+import {IOrder, orderService} from "@/services/orderService";
 import { useModalStore } from "@/store/useModalStore";
 import { orderValidator } from "@/validators/orderValidator";
 
