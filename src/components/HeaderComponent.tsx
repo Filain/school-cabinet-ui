@@ -13,10 +13,11 @@ export default function HeaderComponent() {
   const queryClient = useQueryClient();
   const { user, logout: logoutStore } = useUserStore();
   const logout = async () => {
+    await queryClient.cancelQueries();
+    queryClient.clear();
     await authService.logout();
-    await router.replace("/");
-    await queryClient.clear();
-    await logoutStore();
+    logoutStore();
+    router.replace("/");
   };
   return (
     <header className="flex justify-between items-center min-h-16 bg-green-200 ">
