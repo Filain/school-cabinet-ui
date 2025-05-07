@@ -71,6 +71,7 @@ export default function OrdersComponent() {
         course_type,
         my,
       }),
+    retry: false,
   });
 
   useEffect(() => {
@@ -88,21 +89,15 @@ export default function OrdersComponent() {
   const handleSortClick = (key: string) => {
     const newSort = currentSort === key ? `-${key}` : key;
 
-    // Створення нових параметрів запиту
     const newParams = new URLSearchParams(searchParams.toString());
     newParams.set("sort", newSort);
     newParams.set("page", "1");
-
-    // Оновлення URL
     router.push(`?${newParams.toString()}`);
   };
 
   if (isLoading) {
     return <Loading />;
   }
-  // if (error) {
-  //   return <span>Error: {error.message}</span>;
-  // }
 
   return (
     <>

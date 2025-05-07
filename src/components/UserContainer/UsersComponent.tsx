@@ -18,6 +18,7 @@ export default function UsersComponent() {
   const { data, isLoading } = useQuery({
     queryKey: ["users", page],
     queryFn: async () => await adminService.getAll(page),
+    retry: false,
   });
 
   useEffect(() => {

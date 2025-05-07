@@ -21,10 +21,10 @@ interface InputProps {
 
 const InputGroup = forwardRef<HTMLInputElement | HTMLSelectElement, InputProps>(
   ({ label, name, value: externalValue, onChange, onBlur }, ref) => {
-    const [isAdding, setIsAdding] = useState(false); // Стан для відстеження процесу додавання
-    const [inputValue, setInputValue] = useState(externalValue ?? ""); // Локальний стан значення input
+    const [isAdding, setIsAdding] = useState(false);
+    const [inputValue, setInputValue] = useState(externalValue ?? "");
     const queryClient = useQueryClient();
-    const { data } = useQuery({ queryKey: ["group"], queryFn: () => groupService.getAll() });
+    const { data } = useQuery({ queryKey: ["group"], queryFn: () => groupService.getAll(), retry: false });
     const groupOptions = data?.reduce<ISelectOption[]>((acc, { _id: value, group: label }) => {
       acc.push({ value, label });
       return acc;
@@ -34,34 +34,31 @@ const InputGroup = forwardRef<HTMLInputElement | HTMLSelectElement, InputProps>(
       mutationFn: (data: { group: string }) => groupService.post(data),
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["group"] });
-        setIsAdding(false); // Завершуємо процес додавання після успішної мутації
-        setInputValue(""); // Очищаємо поле після успішного додавання
-        onChange?.({ target: { name, value: "" } } as ChangeEvent<HTMLInputElement>); // Оновлюємо зовнішній стан
+        setIsAdding(false);
+        setInputValue("");
+        onChange?.({ target: { name, value: "" } } as ChangeEvent<HTMLInputElement>);
       },
     });
 
     useEffect(() => {
-      setInputValue(externalValue ?? ""); // Оновлення локального значення при зміні зовнішнього значення
+      setInputValue(externalValue ?? "");
     }, [externalValue]);
 
     const handleAdd = () => {
       setInputValue("");
-      onChange?.({ target: { name, value: "" } } as ChangeEvent<HTMLInputElement>); // очищаємо зовнішнє значення
+      onChange?.({ target: { name, value: "" } } as ChangeEvent<HTMLInputElement>);
       if (isAdding) {
-        // Якщо вже натиснуто "add" і є значення, виконуємо мутацію
         if (inputValue.trim()) {
           mutate({ group: inputValue });
         }
       } else {
-        // Перше натискання "add" - змінюємо input на text
         setIsAdding(true);
       }
     };
 
-    // Функція для обробки зміни в input
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
       setInputValue(e.target.value);
-      onChange?.(e); // Передаємо зміну у зовнішній обробник, якщо він є
+      onChange?.(e);
     };
 
     return (
@@ -74,7 +71,7 @@ const InputGroup = forwardRef<HTMLInputElement | HTMLSelectElement, InputProps>(
             name={name}
             ref={ref as Ref<HTMLInputElement>}
             value={inputValue}
-            onChange={handleInputChange} // Використовуємо локальний обробник змін
+            onChange={handleInputChange}
             onBlur={onBlur}
             placeholder={"Enter new group"}
             className="border p-2 rounded w-full h-10 bg-gray-100 border-none focus:outline-green-500"
@@ -100,7 +97,7 @@ const InputGroup = forwardRef<HTMLInputElement | HTMLSelectElement, InputProps>(
 
         <div className="flex flex-row justify-between gap-2">
           <Button className="h-6 text-sm p-0 w-full" type="button" onClick={handleAdd}>
-            {isAdding ? "Save" : "Add"} {/* Змінюємо текст кнопки */}
+            {isAdding ? "Save" : "Add"}
           </Button>
 
           <Button className="h-6 text-sm p-0 w-full" type="button" onClick={() => setIsAdding(false)}>

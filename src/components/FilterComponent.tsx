@@ -44,7 +44,6 @@ export default function FilterComponent() {
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
 
-    // Якщо будь-який фільтр змінився, скидаємо сторінку на 1
     const filtersChanged = Object.keys(watchedValues).some((key) => {
       return watchedValues[key] !== searchParams.get(key);
     });

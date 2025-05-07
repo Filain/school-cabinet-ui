@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { adminService } from "@/services/adminService";
 
 export default function StatisticComponent() {
-  const { data } = useQuery({ queryKey: ["statistic"], queryFn: () => adminService.getStatic() });
+  const { data } = useQuery({ queryKey: ["statistic"], queryFn: () => adminService.getStatic(), retry: false });
   return (
     <div className="flex flex-col items-center">
       <h2 className="text-2xl">Orders statistic:</h2>

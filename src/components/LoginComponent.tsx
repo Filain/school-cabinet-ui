@@ -9,7 +9,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "@/components/ui/Button";
 import InputPassword from "@/components/ui/form/InputPassword";
 import InputText from "@/components/ui/form/InputText";
-import { authService, IloginData } from "@/services/authService";
+import { IloginData } from "@/interfaces/authInterface";
+import { authService } from "@/services/authService";
 import { useUserStore } from "@/store/useUserStore";
 import { loginValidator } from "@/validators/loginValidator";
 
@@ -23,7 +24,6 @@ export default function LoginComponent() {
       try {
         const user = await authService.me();
         if (user) {
-          // startTransition гарантує, що push не порушить рендер
           React.startTransition(() => {
             router.push("/order");
           });
