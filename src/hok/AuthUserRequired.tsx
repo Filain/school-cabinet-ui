@@ -1,57 +1,47 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
-import { useLayoutEffect, useState } from "react";
+import { useEffect } from "react";
 
 import Loading from "@/app/loading";
 import { authService } from "@/services/authService";
 import { useUserStore } from "@/store/useUserStore";
 
+const USER_QUERY_KEY = "currentUser";
+
 export default function AuthUserRequired({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
   const { user, setUser, logout } = useUserStore();
-  const [loading, setLoading] = useState(true);
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: [USER_QUERY_KEY],
+    queryFn: authService.me,
+    enabled: !user,
+    retry: false,
+    staleTime: Infinity,
+  });
 
-  useLayoutEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const currentUser = await authService.me();
-        if (currentUser) {
-          setUser(currentUser);
-        } else {
-          router.replace("/");
-          logout();
-        }
-      } catch (e: unknown) {
-        if (e instanceof AxiosError && e.response?.status === 403) {
-          router.replace("/");
-          logout();
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    // Перевіряємо користувача лише якщо його ще немає
-    if (!user) {
-      checkAuth();
-    } else {
-      setLoading(false); // Якщо користувач вже є, зупиняємо завантаження
+  useEffect(() => {
+    if (data) {
+      setUser(data);
     }
-  }, [logout, setUser, user, router]);
 
-  // Показуємо лише спінер під час перевірки автентифікації
-  if (loading) {
+    if (isError) {
+      if (error instanceof AxiosError && error.response?.status === 403) {
+        router.replace("/");
+        logout();
+      }
+    }
+  }, [data, isError, error, router, setUser, logout]);
+
+  if (isLoading || (!user && !isError)) {
     return <Loading />;
   }
 
-  // Якщо користувач авторизований (стан user не null), відображаємо обгорнутий компонент (children)
   if (user) {
     return <>{children}</>;
   }
-
-  // Якщо користувач не авторизований і завантаження завершено, нічого не відображаємо (перенаправлення вже відбулося)
   return null;
 }
